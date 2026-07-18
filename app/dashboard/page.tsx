@@ -51,29 +51,14 @@ export default function DashboardPage() {
             <ServiceSearch />
           </div>
           <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/5 p-8 shadow-[0_40px_120px_rgba(15,23,42,0.35)] backdrop-blur-xl">
-            <div className="pointer-events-none absolute -right-10 top-8 hidden h-80 w-80 rounded-full bg-[#ffc85c]/10 blur-3xl lg:block" />
-            <div className="pointer-events-none absolute right-6 top-14 hidden h-[420px] w-[420px] lg:block">
-              <div className="absolute inset-0 rounded-full border border-[#ffc85c]/15 bg-[#ffc85c]/10 blur-2xl" />
-              <div className="absolute left-0 top-0 h-full w-full">
-                {[
-                  { Icon: SiInstagram, top: "6%", left: "18%" },
-                  { Icon: SiTiktok, top: "16%", left: "70%" },
-                  { Icon: SiYoutube, top: "28%", left: "22%" },
-                  { Icon: SiFacebook, top: "38%", left: "58%" },
-                  { Icon: SiX, top: "48%", left: "12%" },
-                  { Icon: SiTelegram, top: "58%", left: "46%" },
-                  { Icon: SiSpotify, top: "70%", left: "28%" },
-                  { Icon: SiDiscord, top: "78%", left: "68%" },
-                ].map((item, index) => (
-                  <div
-                    key={index}
-                    className="absolute inline-flex h-14 w-14 items-center justify-center rounded-3xl border border-white/10 bg-slate-950/90 text-[#ffc85c] shadow-[0_20px_60px_rgba(255,200,92,0.12)]"
-                    style={{ top: item.top, left: item.left }}
-                  >
-                    <item.Icon className="h-5 w-5" />
+            {/* Platform icons moved out of absolute positioning into a responsive grid to avoid overlap */}
+            <div className="mt-6 lg:mt-0 lg:ml-8 lg:flex lg:items-center">
+              <div className="grid grid-cols-5 gap-3 lg:grid-cols-3">
+                {[SiInstagram, SiTiktok, SiYoutube, SiFacebook, SiX, SiTelegram, SiSpotify, SiDiscord, FaLinkedin, SiTwitch].map((Icon, index) => (
+                  <div key={index} className="flex h-12 w-12 items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-white/90 shadow-lg shadow-slate-950/20">
+                    <Icon className="h-5 w-5" />
                   </div>
                 ))}
-                <div className="absolute left-[42%] top-[34%] h-20 w-20 rounded-full border border-[#ffc85c]/20 bg-[#ffc85c]/10 shadow-[0_0_60px_rgba(255,200,92,0.18)]" />
               </div>
             </div>
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -201,15 +186,10 @@ export default function DashboardPage() {
             <Sparkles className="text-brand-blue" />
           </div>
           <div className="mt-6 space-y-5">
+            {/* Removed fabricated "Top stats" and "Pricing" cards to avoid displaying invented numbers. */}
             <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-5">
-              <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Top stats</p>
-              <p className="mt-3 text-xl font-semibold text-white">25M+ orders</p>
-              <p className="mt-2 text-sm text-slate-400">Fast fulfillment across platforms.</p>
-            </div>
-            <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-5">
-              <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Pricing</p>
-              <p className="mt-3 text-xl font-semibold text-white">From $0.001</p>
-              <p className="mt-2 text-sm text-slate-400">Lowest rates on every service.</p>
+              <p className="text-sm uppercase tracking-[0.3em] text-slate-400">About</p>
+              <p className="mt-3 text-base text-slate-300">Real-time wallet and order information is shown using your account data. No fabricated metrics are displayed.</p>
             </div>
           </div>
         </aside>
