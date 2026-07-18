@@ -25,6 +25,10 @@ export default function LoginPage() {
     }
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href = `${api.defaults.baseURL}/auth/google`;
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 px-6 py-12 text-white">
       <div className="mx-auto max-w-md rounded-[2rem] border border-white/10 bg-slate-900/80 p-10 shadow-2xl shadow-slate-950/40">
@@ -42,6 +46,17 @@ export default function LoginPage() {
           {error ? <div className="rounded-3xl bg-red-500/10 p-4 text-sm text-red-300">{error}</div> : null}
           <button type="submit" className="w-full rounded-3xl bg-brand-blue px-5 py-3 text-sm font-semibold text-white">Login</button>
         </form>
+        <div className="mt-6">
+          <div className="flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-slate-500">
+            <div className="h-px flex-1 bg-white/10" />
+            <span>or</span>
+            <div className="h-px flex-1 bg-white/10" />
+          </div>
+          <button type="button" onClick={handleGoogleLogin} className="mt-4 flex w-full items-center justify-center gap-3 rounded-3xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+            <span className="text-lg">G</span>
+            Continue with Google
+          </button>
+        </div>
         <div className="mt-6 text-center text-sm text-slate-400">
           <button className="text-brand-purple hover:text-brand-blue">Forgot password?</button>
         </div>
