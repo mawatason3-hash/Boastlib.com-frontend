@@ -2,7 +2,7 @@
 
 import { Sidebar } from "../components/Sidebar";
 import { useState, useEffect } from "react";
-import api from "../../lib/api";
+import api from "@/lib/api";
 
 export default function DeveloperPage() {
   const [info, setInfo] = useState<{ name: string; contact: string; credit_line: string } | null>(null);

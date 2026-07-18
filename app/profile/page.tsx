@@ -1,7 +1,7 @@
 "use client";
 
 import { Sidebar } from "../components/Sidebar";
-import { logout, getUser } from "../../lib/auth";
+import { logout, getUser } from "@/lib/auth";
 
 export default function ProfilePage() {
   const user = getUser() || { full_name: "Alex", email: "alex@example.com" };

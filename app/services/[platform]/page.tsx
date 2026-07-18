@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { buildMetadata, buildCommonDescription } from "../../lib/seo";
+import { buildMetadata, buildCommonDescription } from "@/lib/seo";
 
 type ServiceItem = {
   id: string;

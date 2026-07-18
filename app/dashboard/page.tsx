@@ -6,8 +6,8 @@ import { ServiceSearch } from "../components/ServiceSearch";
 import { ArrowRight, CheckCircle2, Clock, Sparkles } from "lucide-react";
 import { SiInstagram, SiTiktok, SiYoutube, SiFacebook, SiTelegram, SiSpotify, SiDiscord, SiTwitch, SiX } from "react-icons/si";
 import { FaLinkedin } from "react-icons/fa";
-import api from "../../lib/api";
-import { getUser } from "../../lib/auth";
+import api from "@/lib/api";
+import { getUser } from "@/lib/auth";
 
 type Order = {
   id: string;
