@@ -3,8 +3,10 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Sidebar } from "../components/Sidebar";
+import { ServiceSearch } from "../components/ServiceSearch";
 import { Search, ArrowRight, DollarSign, CheckCircle2, Clock, ShieldCheck } from "lucide-react";
 import api from "@/lib/api";
+import { getUser } from "@/lib/auth";
 
 const platforms = ["Instagram", "TikTok", "YouTube", "Facebook", "Twitter X", "Telegram", "Spotify", "Discord"];
 
@@ -91,7 +93,7 @@ function NewOrderPageContent() {
       setError(null);
       try {
         const params = new URLSearchParams();
-        if (platform) params.set("network", platform);
+        if (platform) params.set("platform", platform);
         if (query.trim()) params.set("q", query.trim());
         const response = await api.get(`/services/search?${params.toString()}`);
         setServices(response.data || []);
@@ -176,6 +178,9 @@ function NewOrderPageContent() {
     }
   };
 
+  const user = getUser();
+  const firstName = user?.full_name?.split(" ")[0] || user?.email?.split("@")[0] || "there";
+
   return (
     <main className="min-h-screen bg-slate-950 px-6 py-8 text-white">
       <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[280px_1fr]">
@@ -186,6 +191,7 @@ function NewOrderPageContent() {
               <div>
                 <p className="text-sm uppercase tracking-[0.3em] text-brand-gold">New Order</p>
                 <h1 className="mt-2 text-3xl font-semibold">Create a new order</h1>
+                <p className="mt-3 max-w-2xl text-sm text-slate-400">Welcome back, {firstName}. Search services, compare delivery estimates, and submit your campaign instantly.</p>
               </div>
               <button
                 onClick={handlePlaceOrder}
@@ -194,6 +200,9 @@ function NewOrderPageContent() {
               >
                 Place Order <ArrowRight size={18} />
               </button>
+            </div>
+            <div className="mt-6">
+              <ServiceSearch />
             </div>
           </div>
 

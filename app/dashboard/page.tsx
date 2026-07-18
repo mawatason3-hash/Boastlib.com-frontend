@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { Sidebar } from "../components/Sidebar";
 import { ServiceSearch } from "../components/ServiceSearch";
 import { ArrowRight, CheckCircle2, Clock, Sparkles } from "lucide-react";
@@ -11,10 +12,10 @@ import { getUser } from "@/lib/auth";
 
 type Order = {
   id: string;
-  service: string;
-  charge: number;
-  status: string;
-  created_at: string;
+  service?: string;
+  charge?: number;
+  status?: string;
+  created_at?: string;
 };
 
 export default function DashboardPage() {
@@ -22,6 +23,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const user = getUser();
+  const firstName = user?.full_name?.split(" ")[0] || user?.email?.split("@")[0] || "there";
 
   useEffect(() => {
     const loadOrders = async () => {
@@ -45,21 +47,19 @@ export default function DashboardPage() {
 
   return (
     <main className="min-h-screen bg-[#070b16] px-6 py-8 text-white">
-      <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+      <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[280px_1.15fr_0.85fr]">
+        <Sidebar />
         <section className="space-y-6">
           <div className="rounded-[2.5rem] border border-white/10 bg-slate-950/80 p-6 shadow-[0_40px_120px_rgba(15,23,42,0.35)] backdrop-blur-xl">
             <ServiceSearch />
           </div>
           <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/5 p-8 shadow-[0_40px_120px_rgba(15,23,42,0.35)] backdrop-blur-xl">
-            {/* Platform icons moved out of absolute positioning into a responsive grid to avoid overlap */}
-            <div className="mt-6 lg:mt-0 lg:ml-8 lg:flex lg:items-center">
-              <div className="grid grid-cols-5 gap-3 lg:grid-cols-3">
-                {[SiInstagram, SiTiktok, SiYoutube, SiFacebook, SiX, SiTelegram, SiSpotify, SiDiscord, FaLinkedin, SiTwitch].map((Icon, index) => (
-                  <div key={index} className="flex h-12 w-12 items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-white/90 shadow-lg shadow-slate-950/20">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                ))}
-              </div>
+            <div className="grid grid-cols-5 gap-3 lg:grid-cols-3">
+              {[SiInstagram, SiTiktok, SiYoutube, SiFacebook, SiX, SiTelegram, SiSpotify, SiDiscord, FaLinkedin, SiTwitch].map((Icon, index) => (
+                <div key={index} className="flex h-12 w-12 items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-white/90 shadow-lg shadow-slate-950/20">
+                  <Icon className="h-5 w-5" />
+                </div>
+              ))}
             </div>
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-2xl space-y-4">
@@ -67,15 +67,15 @@ export default function DashboardPage() {
                   <p className="text-sm uppercase tracking-[0.35em] text-[#ffc85c]">BoastLib Dashboard</p>
                   <span className="rounded-full border border-[#ffc85c]/20 bg-[#ffc85c]/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[#ffc85c]">Live</span>
                 </div>
-                <h1 className="text-5xl font-semibold leading-tight text-white">Boost your social media reselling with real-time wallet and order control.</h1>
-                <p className="max-w-xl text-slate-300">Monitor wallet funds, recent order activity, and top metrics with the same polished SMM panel look as the homepage prototype.</p>
+                <h1 className="text-5xl font-semibold leading-tight text-white">Hi {firstName}, manage your wallet and orders in one place.</h1>
+                <p className="max-w-xl text-slate-300">Monitor wallet funds, recent order activity, and key campaign metrics with a clean panel experience.</p>
                 <div className="flex flex-wrap gap-4">
-                  <button className="inline-flex items-center gap-2 rounded-full bg-[#ffc85c] px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-[#ffc85c]/20 transition hover:bg-[#ffe27d]">
+                  <Link href="/new-order" className="inline-flex items-center gap-2 rounded-full bg-[#ffc85c] px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-[#ffc85c]/20 transition hover:bg-[#ffe27d]">
                     Start order <ArrowRight size={18} />
-                  </button>
-                  <button className="inline-flex items-center gap-2 rounded-full border border-[#ffc85c]/20 bg-[#ffc85c]/10 px-6 py-3 text-sm font-semibold text-white/90 transition hover:bg-[#ffc85c]/15">
+                  </Link>
+                  <Link href="/services" className="inline-flex items-center gap-2 rounded-full border border-[#ffc85c]/20 bg-[#ffc85c]/10 px-6 py-3 text-sm font-semibold text-white/90 transition hover:bg-[#ffc85c]/15">
                     View services
-                  </button>
+                  </Link>
                 </div>
               </div>
 
@@ -186,7 +186,6 @@ export default function DashboardPage() {
             <Sparkles className="text-brand-blue" />
           </div>
           <div className="mt-6 space-y-5">
-            {/* Removed fabricated "Top stats" and "Pricing" cards to avoid displaying invented numbers. */}
             <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-5">
               <p className="text-sm uppercase tracking-[0.3em] text-slate-400">About</p>
               <p className="mt-3 text-base text-slate-300">Real-time wallet and order information is shown using your account data. No fabricated metrics are displayed.</p>
