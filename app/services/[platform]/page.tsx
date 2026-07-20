@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { buildMetadata, buildCommonDescription } from "@/lib/seo";
+import { fetchBackend } from "@/lib/backend";
 
 type ServiceItem = {
   id: string;
@@ -15,8 +16,7 @@ type ServiceItem = {
 };
 
 async function fetchPlatformServices(platform: string) {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-  const response = await fetch(`${apiUrl}/api/public/services?platform=${encodeURIComponent(platform)}`, { cache: "no-store" });
+  const response = await fetchBackend(`/api/public/services?platform=${encodeURIComponent(platform)}`);
   if (!response.ok) {
     throw new Error("Unable to fetch platform services");
   }

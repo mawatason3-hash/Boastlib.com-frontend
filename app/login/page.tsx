@@ -2,31 +2,30 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import api from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/contexts/ToastContext";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login, isLoading } = useAuth();
+  const { showToast } = useToast();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
-    try {
-      const response = await api.post("/auth/login", {
-        email: form.email,
-        password: form.password,
-      });
-      localStorage.setItem("boastlib_token", response.data.token);
-      localStorage.setItem("boastlib_user", JSON.stringify(response.data.user));
+    const result = await login(form.email, form.password);
+    if (result.success) {
+      showToast("Logged in successfully.", "success");
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Login failed");
+      return;
     }
+    setError(result.error || "Login failed");
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${api.defaults.baseURL}/auth/google`;
+    window.location.href = `${window.location.origin}/api/auth/google`;
   };
 
   return (

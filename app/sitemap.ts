@@ -1,10 +1,10 @@
 import { MetadataRoute } from "next";
+import { fetchBackend } from "@/lib/backend";
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://boastlib.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const response = await fetch(`${apiUrl}/api/public/services/platforms`, { cache: "no-store" });
+  const response = await fetchBackend("/api/public/services/platforms");
   const platforms = response.ok ? (await response.json()) as Array<{ platform: string; lastmod: string }> : [];
 
   const platformUrls = platforms.map((row) => ({

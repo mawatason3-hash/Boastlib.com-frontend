@@ -20,10 +20,11 @@ const faqItems = [
   { question: "Do I need an account to browse services?", answer: "No. The landing page is public and does not show any user-specific wallet or order data." },
 ];
 
+import { fetchBackend } from "@/lib/backend";
+
 async function fetchPublicStats() {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   try {
-    const response = await fetch(`${apiUrl}/api/stats/public`, { cache: "no-store" });
+    const response = await fetchBackend("/api/stats/public");
     if (!response.ok) {
       return [];
     }

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ToastProvider } from "@/contexts/ToastContext";
+import AuthGuard from "@/app/components/AuthGuard";
 
 export const metadata: Metadata = {
   title: "BoastLib SMM Panel",
@@ -9,7 +12,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          <ToastProvider>
+            <AuthGuard>{children}</AuthGuard>
+          </ToastProvider>
+        </AuthProvider>
+      </body>
     </html>
   );
 }

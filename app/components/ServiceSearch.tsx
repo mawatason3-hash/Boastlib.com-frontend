@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { SiFacebook, SiInstagram, SiSpotify, SiTelegram, SiTiktok, SiYoutube, SiDiscord, SiX } from "react-icons/si";
+import api from "@/lib/api";
 
 const platformIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   Instagram: SiInstagram,
@@ -50,16 +51,10 @@ export function ServiceSearch({ placeholder = "Search services by platform, cate
 
     const timer = window.setTimeout(async () => {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-        const url = `${apiUrl}/api/public/services/search?q=${encodeURIComponent(trimmed)}`;
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Unable to load search results");
-        }
-        const data = (await response.json()) as ServiceResult[];
-        setResults(data);
+        const response = await api.get<ServiceResult[]>(`/public/services/search?q=${encodeURIComponent(trimmed)}`);
+        setResults(response.data || []);
       } catch (err: any) {
-        setError(err?.message || "Unable to fetch search results");
+        setError(err.response?.data?.error || "Unable to fetch search results");
         setResults([]);
       } finally {
         setLoading(false);

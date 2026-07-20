@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import api from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/contexts/ToastContext";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { register, isLoading } = useAuth();
+  const { showToast } = useToast();
   const [form, setForm] = useState({ fullName: "", email: "", password: "", confirmPassword: "", agree: false });
   const [error, setError] = useState("");
 
@@ -16,22 +19,17 @@ export default function RegisterPage() {
       setError("Passwords must match");
       return;
     }
-    try {
-      const response = await api.post("/auth/register", {
-        fullName: form.fullName,
-        email: form.email,
-        password: form.password,
-      });
-      localStorage.setItem("boastlib_token", response.data.token);
-      localStorage.setItem("boastlib_user", JSON.stringify(response.data.user));
+    const result = await register(form.fullName, form.email, form.password);
+    if (result.success) {
+      showToast("Account created successfully.", "success");
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Registration failed");
+      return;
     }
+    setError(result.error || "Registration failed");
   };
 
   const handleGoogleSignup = () => {
-    window.location.href = `${api.defaults.baseURL}/auth/google`;
+    window.location.href = `${window.location.origin}/api/auth/google`;
   };
 
   return (
